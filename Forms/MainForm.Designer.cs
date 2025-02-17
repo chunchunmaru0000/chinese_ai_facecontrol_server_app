@@ -46,6 +46,7 @@ namespace testkit
             this.takenPhotoPictureBox = new System.Windows.Forms.PictureBox();
             this.takePhotoBut = new System.Windows.Forms.Button();
             this.aiPictureBox = new System.Windows.Forms.PictureBox();
+            this.idLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.camPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.takenPhotoPictureBox)).BeginInit();
@@ -55,7 +56,7 @@ namespace testkit
             // userDataListView
             // 
             this.userDataListView.HideSelection = false;
-            this.userDataListView.Location = new System.Drawing.Point(0, 512);
+            this.userDataListView.Location = new System.Drawing.Point(0, 544);
             this.userDataListView.Name = "userDataListView";
             this.userDataListView.Size = new System.Drawing.Size(768, 192);
             this.userDataListView.TabIndex = 0;
@@ -65,7 +66,7 @@ namespace testkit
             // connectBut
             // 
             this.connectBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.connectBut.Location = new System.Drawing.Point(32, 32);
+            this.connectBut.Location = new System.Drawing.Point(0, 32);
             this.connectBut.Name = "connectBut";
             this.connectBut.Size = new System.Drawing.Size(192, 32);
             this.connectBut.TabIndex = 1;
@@ -76,7 +77,7 @@ namespace testkit
             // disconnectBut
             // 
             this.disconnectBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.disconnectBut.Location = new System.Drawing.Point(32, 64);
+            this.disconnectBut.Location = new System.Drawing.Point(0, 64);
             this.disconnectBut.Name = "disconnectBut";
             this.disconnectBut.Size = new System.Drawing.Size(192, 32);
             this.disconnectBut.TabIndex = 2;
@@ -87,7 +88,7 @@ namespace testkit
             // clearList
             // 
             this.clearList.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.clearList.Location = new System.Drawing.Point(32, 96);
+            this.clearList.Location = new System.Drawing.Point(0, 96);
             this.clearList.Name = "clearList";
             this.clearList.Size = new System.Drawing.Size(192, 32);
             this.clearList.TabIndex = 3;
@@ -98,7 +99,7 @@ namespace testkit
             // textPort
             // 
             this.textPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textPort.Location = new System.Drawing.Point(128, 0);
+            this.textPort.Location = new System.Drawing.Point(96, 0);
             this.textPort.Name = "textPort";
             this.textPort.Size = new System.Drawing.Size(95, 31);
             this.textPort.TabIndex = 4;
@@ -111,9 +112,9 @@ namespace testkit
             this.panel1.Controls.Add(this.connectBut);
             this.panel1.Controls.Add(this.clearList);
             this.panel1.Controls.Add(this.textPort);
-            this.panel1.Location = new System.Drawing.Point(1056, 512);
+            this.panel1.Location = new System.Drawing.Point(1120, 608);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(256, 160);
+            this.panel1.Size = new System.Drawing.Size(192, 128);
             this.panel1.TabIndex = 6;
             // 
             // portLabel
@@ -121,7 +122,7 @@ namespace testkit
             this.portLabel.AutoSize = true;
             this.portLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.portLabel.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.portLabel.Location = new System.Drawing.Point(32, 0);
+            this.portLabel.Location = new System.Drawing.Point(0, 0);
             this.portLabel.Name = "portLabel";
             this.portLabel.Size = new System.Drawing.Size(76, 31);
             this.portLabel.TabIndex = 5;
@@ -142,7 +143,7 @@ namespace testkit
             // 
             this.camBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.camBox.FormattingEnabled = true;
-            this.camBox.Location = new System.Drawing.Point(800, 544);
+            this.camBox.Location = new System.Drawing.Point(1120, 576);
             this.camBox.Name = "camBox";
             this.camBox.Size = new System.Drawing.Size(192, 33);
             this.camBox.TabIndex = 9;
@@ -152,7 +153,7 @@ namespace testkit
             // webCamTextLabel
             // 
             this.webCamTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.webCamTextLabel.Location = new System.Drawing.Point(800, 512);
+            this.webCamTextLabel.Location = new System.Drawing.Point(1120, 544);
             this.webCamTextLabel.Name = "webCamTextLabel";
             this.webCamTextLabel.Size = new System.Drawing.Size(192, 32);
             this.webCamTextLabel.TabIndex = 10;
@@ -204,11 +205,22 @@ namespace testkit
             this.aiPictureBox.TabIndex = 14;
             this.aiPictureBox.TabStop = false;
             // 
+            // idLabel
+            // 
+            this.idLabel.AutoSize = true;
+            this.idLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.idLabel.Location = new System.Drawing.Point(768, 416);
+            this.idLabel.Name = "idLabel";
+            this.idLabel.Size = new System.Drawing.Size(250, 31);
+            this.idLabel.TabIndex = 15;
+            this.idLabel.Text = "ПОСЛЕДНИЙ ID:  ";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1324, 707);
+            this.ClientSize = new System.Drawing.Size(1314, 738);
+            this.Controls.Add(this.idLabel);
             this.Controls.Add(this.aiPictureBox);
             this.Controls.Add(this.takePhotoBut);
             this.Controls.Add(this.takenPhotoPictureBox);
@@ -227,6 +239,7 @@ namespace testkit
             ((System.ComponentModel.ISupportInitialize)(this.takenPhotoPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aiPictureBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 
@@ -247,6 +260,7 @@ namespace testkit
         private System.Windows.Forms.PictureBox takenPhotoPictureBox;
         private System.Windows.Forms.Button takePhotoBut;
         private System.Windows.Forms.PictureBox aiPictureBox;
+        private System.Windows.Forms.Label idLabel;
     }
 }
 

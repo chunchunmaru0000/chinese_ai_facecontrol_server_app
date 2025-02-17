@@ -215,12 +215,16 @@ namespace testkit
 
 			if (e.anSEnrollNumber < 0)
 			{
-				dwCardNum1 = e.anSEnrollNumber + 4294967296;
+                dwCardNum1 = e.anSEnrollNumber + 4294967296;
 				str = dwCardNum1.ToString();
 				lvi.SubItems.Add(str);
 			}
 			else
 				lvi.SubItems.Add(str);
+
+
+			idLabel.Text = e.anSEnrollNumber < 0 ? idLabel.Text : $"ПОСЛЕДНИЙ ID: {e.anSEnrollNumber}";
+
 
 			if (e.anVerifyMode > 40)
 			{
