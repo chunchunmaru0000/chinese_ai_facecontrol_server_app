@@ -70,6 +70,15 @@ namespace testkit
 			camPictureBox.Image = (Bitmap)e.Frame.Clone();
 		}
 
+        private void saveCamBut_Click(object sender, EventArgs e)
+        {
+			if (camPictureBox.Image == null)
+				return;
+
+			string imageName = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString() + ".png";
+			camPictureBox.Image.Save(imageName);
+        }
+
         #endregion WEB_CAM
 
         #region BEGIN_INITS

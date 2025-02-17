@@ -42,6 +42,7 @@ namespace testkit
             this.camPictureBox = new System.Windows.Forms.PictureBox();
             this.camBox = new System.Windows.Forms.ComboBox();
             this.webCamTextLabel = new System.Windows.Forms.Label();
+            this.saveCamBut = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.camPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -153,11 +154,23 @@ namespace testkit
             this.webCamTextLabel.Text = "Веб камера";
             this.webCamTextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // saveCamBut
+            // 
+            this.saveCamBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.saveCamBut.Location = new System.Drawing.Point(800, 576);
+            this.saveCamBut.Name = "saveCamBut";
+            this.saveCamBut.Size = new System.Drawing.Size(192, 64);
+            this.saveCamBut.TabIndex = 11;
+            this.saveCamBut.Text = "Сохранить изображение";
+            this.saveCamBut.UseVisualStyleBackColor = true;
+            this.saveCamBut.Click += new System.EventHandler(this.saveCamBut_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1324, 707);
+            this.Controls.Add(this.saveCamBut);
             this.Controls.Add(this.webCamTextLabel);
             this.Controls.Add(this.camBox);
             this.Controls.Add(this.camPictureBox);
@@ -186,6 +199,7 @@ namespace testkit
         private System.Windows.Forms.PictureBox camPictureBox;
         private System.Windows.Forms.ComboBox camBox;
         private System.Windows.Forms.Label webCamTextLabel;
+        private System.Windows.Forms.Button saveCamBut;
     }
 }
 
