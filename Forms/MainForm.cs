@@ -166,6 +166,13 @@ namespace testkit
 		}
 		#endregion
 		#region AX
+
+		public string FormString(int nVerify, int nEnrollNum) =>
+			nEnrollNum == 0 ? actions[nVerify % 8] : nVerify.ToString();
+
+		public string FormStringlong(int nVerify, long nEnrollNum) =>
+			nEnrollNum == 0 ? actions[nVerify % 8] : nVerify.ToString();
+
 		private void axFPCLOCK_Svr1_OnReceiveGLogData(object sender, _DFPCLOCK_SvrEvents_OnReceiveGLogDataEvent e)
 		{
 			string strKey = Convert.ToString(nIndex + 1);
@@ -184,16 +191,26 @@ namespace testkit
 				{
 					byte[] mbytCurEnrollData = new byte[imagelen];
 					Marshal.Copy(ptrIndexFacePhoto, mbytCurEnrollData, 0, imagelen);
-					File.WriteAllBytes(e.anSEnrollNumber.ToString() + "_" + e.anLogDate.ToString("yy_MM_dd_HH_mm_ss") + ".jpg", mbytCurEnrollData);
+
+                    string imageName = e.anSEnrollNumber.ToString() + "_" + e.anLogDate.ToString("yy_MM_dd_HH_mm_ss") + ".png";
+					try
+					{
+						byte[] imageBytes = new byte[imagelen];
+						mbytCurEnrollData.CopyTo(imageBytes, 0);
+
+						aiPictureBox.Image = new Bitmap(new MemoryStream(imageBytes)).Clone() as Bitmap;
+					} catch { }
+
+					File.WriteAllBytes(imageName, mbytCurEnrollData);
 				}
 				Marshal.FreeHGlobal(ptrIndexFacePhoto);
 			}
 
 			//数据更新，UI暂时挂起，直到EndUpdate绘制控件，可以有效避免闪烁并大大提高加载速度
 			userDataListView.BeginUpdate();
-
-			//this.listView1.Focus();
-			ListViewItem lvi = new ListViewItem();
+            #region LIST_ADD_DATA
+            //this.listView1.Focus();
+            ListViewItem lvi = new ListViewItem();
 			lvi.Text = strKey;
 
 			if (e.anSEnrollNumber < 0)
@@ -203,9 +220,7 @@ namespace testkit
 				lvi.SubItems.Add(str);
 			}
 			else
-			{
 				lvi.SubItems.Add(str);
-			}
 
 			if (e.anVerifyMode > 40)
 			{
@@ -214,10 +229,8 @@ namespace testkit
 				str = aTemperature.ToString("#0.0");
 			}
 			else
-			{
-
 				str = FormString(e.anVerifyMode, e.anSEnrollNumber);
-			}
+
 			if (e.anSEnrollNumber < 0)
 			{
 				dwCardNum1 = e.anSEnrollNumber + 4294967296;
@@ -225,29 +238,20 @@ namespace testkit
 				lvi.SubItems.Add(str);
 			}
 			else
-			{
 				lvi.SubItems.Add(str);
-			}
 
 			if (e.anInOutMode == 1)
-			{
 				str = "OUT";
-			}
 			else if (0 == e.anInOutMode)
-			{
 				str = "IN";
-			}
 			else
-			{
 				str = "--";
-			}
+
 			lvi.SubItems.Add(str);
 
 			str = Convert.ToString(e.anLogDate.ToString("yyyy/MM/dd HH:mm:ss"));
-			//str = Convert.ToString(e.anLogDate.ToString("yyyy/MM/dd HH:mm"));
 			lvi.SubItems.Add(str);
 
-			//str = Convert.ToString(e.astrDeviceIP);
 			lvi.SubItems.Add(e.astrDeviceIP);
 
 			str = Convert.ToString(e.anDevicePort);
@@ -260,9 +264,8 @@ namespace testkit
 			lvi.SubItems.Add(str);
 
 			userDataListView.Items.Add(lvi);
-			//this.listView1.Items.(5, str);
-
-			userDataListView.Update();
+            #endregion LIST_ADD_DATA
+            userDataListView.Update();
 
 			userDataListView.EnsureVisible(nIndex);
 			userDataListView.EndUpdate();  //结束数据处理，UI界面一次性绘制。
@@ -280,11 +283,6 @@ namespace testkit
 
 		}
 
-		public string FormString(int nVerify, int nEnrollNum) =>
-			nEnrollNum == 0 ? actions[nVerify % 8] : nVerify.ToString();
-
-		public string FormStringlong(int nVerify, long nEnrollNum) =>
-			nEnrollNum == 0 ? actions[nVerify % 8] : nVerify.ToString();
         #endregion
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)

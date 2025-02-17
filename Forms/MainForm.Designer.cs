@@ -45,9 +45,11 @@ namespace testkit
             this.saveCamBut = new System.Windows.Forms.Button();
             this.takenPhotoPictureBox = new System.Windows.Forms.PictureBox();
             this.takePhotoBut = new System.Windows.Forms.Button();
+            this.aiPictureBox = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.camPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.takenPhotoPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.aiPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // userDataListView
@@ -193,11 +195,21 @@ namespace testkit
             this.takePhotoBut.UseVisualStyleBackColor = false;
             this.takePhotoBut.Click += new System.EventHandler(this.takePhotoBut_Click);
             // 
+            // aiPictureBox
+            // 
+            this.aiPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.aiPictureBox.Location = new System.Drawing.Point(800, 64);
+            this.aiPictureBox.Name = "aiPictureBox";
+            this.aiPictureBox.Size = new System.Drawing.Size(320, 256);
+            this.aiPictureBox.TabIndex = 14;
+            this.aiPictureBox.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1324, 707);
+            this.Controls.Add(this.aiPictureBox);
             this.Controls.Add(this.takePhotoBut);
             this.Controls.Add(this.takenPhotoPictureBox);
             this.Controls.Add(this.saveCamBut);
@@ -213,6 +225,7 @@ namespace testkit
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.camPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.takenPhotoPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.aiPictureBox)).EndInit();
             this.ResumeLayout(false);
 
 		}
@@ -233,6 +246,7 @@ namespace testkit
         private System.Windows.Forms.Button saveCamBut;
         private System.Windows.Forms.PictureBox takenPhotoPictureBox;
         private System.Windows.Forms.Button takePhotoBut;
+        private System.Windows.Forms.PictureBox aiPictureBox;
     }
 }
 
