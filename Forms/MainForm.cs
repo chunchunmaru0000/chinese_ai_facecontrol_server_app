@@ -1,29 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using AxFPCLOCK_SVRLib;
 using System.IO;
 using System.Runtime.InteropServices;
-using DirectShowLib;
-using System.Threading;
+using AxFPCLOCK_SVRLib;
+using AForge;
+using AForge.Video;
+using AForge.Video.DirectShow;
+using System.Drawing;
+using System.Linq;
 
 namespace testkit
 {
-	public partial class Form1 : Form
+	public partial class MainForm : Form
 	{
-		string webcamUrl;
-
-		string stateStr = @"
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACFTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5BeEhvc3QrU3RhdGUBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAJQAAAAIB
-        AAAAAQAAAAAAAAAAAAAAABAAAAAAAAEAVgoAADgEAAAAAAAACw==
-";
 		private AxFPCLOCK_Svr axFPCLOCK_Svr;
 		private int nIndex = 0;
-		private int Recordnumber = 0;
 
-		private Dictionary<int, string> actions = new Dictionary<int, string>() 
+		private readonly Dictionary<int, string> actions = new Dictionary<int, string>() 
 		{
 			{ 0, "Closed" },   { 1, "Opened" },
 			{ 2, "HandOpen" }, { 3, "ProcOpen" },
@@ -32,58 +26,63 @@ namespace testkit
 			{ 8, "--" }
 		};
 
-		public Form1()
+		public MainForm()
 		{
 			InitializeComponent();
-			//this.vlcControl.VlcLibDirectory = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "libvlc\\win-x86"));
-
 			InitaxFPCLOCK_Svr();
 			AdjustSomeControls();
 			InitListView();
+        }
 
-			//InitUSBWEB();
-		}
+		#region WEB_CAM
 
-		private void InitUSBWEB()
-		{
-			vlcControl.Log += (sender, args) => Console.WriteLine(args.Message);
+		private FilterInfoCollection videoDevices { get; set; }
+		private VideoCaptureDevice videoCaptureDevice { get; set; }
 
-			webcamUrl = GetWebCamUrl();
+        private void camBox_DropDown(object sender, EventArgs e)
+        {
+			videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+			camBox.Items.Clear();
 
-			string[] options = new string[]
+			for (int i = 0; i < videoDevices.Count; i++)
+				camBox.Items.Add($"{i} {videoDevices[i].Name}");
+        }
+
+        private void camBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+			string camName = string.Join(" ", camBox.SelectedItem.ToString().Split(' ').Skip(1));
+            for (int i = 0; i < videoDevices.Count; i++)
 			{
-				//$":dshow-vdev=\"{webcamUrl}\"",
-				":dshow-vdev=USB2.0 PC CAMERA",
-				":dshow-adev=none",
-				":live-caching=0",
-			};
-			
+				if (videoDevices[i].Name == camName)
+				{
+					videoCaptureDevice?.Stop();
 
-			vlcControl.Play("dshow://", options);
-			//vlcControl.Play($"dshow://{webcamUrl}", options);
-			//vlcControl.Play(new Uri("C:\\Users\\user\\Desktop\\vlcvideos\\rules.mp4"));
-		}
-
-		private string GetWebCamUrl()
-		{
-			DsDevice[] cams = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
-			string webcam = "";
-			
-			foreach  (DsDevice cam in cams)
-			{
-				if (cam.Name.ToLower().Contains("camera"))
-					//webcam = $"dshow:// :dshow-vdev=\"{cam.Name}\"";
-					webcam = cam.Name;
-				Console.WriteLine($"\n{cam.Name}");
+                    videoCaptureDevice = new VideoCaptureDevice(videoDevices[0].MonikerString);
+                    videoCaptureDevice.NewFrame += WebCamNewFrame;
+                    videoCaptureDevice.Start();
+                }
 			}
-			Console.WriteLine(webcam + '\n');
-			return webcam;
+        }
+
+		private void WebCamNewFrame(object sender, NewFrameEventArgs e)
+		{
+			camPictureBox.Image?.Dispose();
+			camPictureBox.Image = (Bitmap)e.Frame.Clone();
 		}
 
-		#region BEGIN_INITS
-		private void InitaxFPCLOCK_Svr()
+        #endregion WEB_CAM
+
+        #region BEGIN_INITS
+        private void InitaxFPCLOCK_Svr()
 		{
-			byte[] serializedData = Convert.FromBase64String(stateStr);
+            string stateStr = @"
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACFTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5BeEhvc3QrU3RhdGUBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAJQAAAAIB
+        AAAAAQAAAAAAAAAAAAAAABAAAAAAAAEAVgoAADgEAAAAAAAACw==
+";
+
+            byte[] serializedData = Convert.FromBase64String(stateStr);
 
 			axFPCLOCK_Svr = new AxFPCLOCK_Svr() { Name = "axFPCLOCK_Svr1" };
 			using (MemoryStream ms = new MemoryStream(serializedData))
@@ -98,15 +97,15 @@ namespace testkit
 
 		private void InitListView()
 		{
-			listView1.Columns.Add(" ", 40, HorizontalAlignment.Left);          //一步添加
-			listView1.Columns.Add("EnrollNo", 100, HorizontalAlignment.Left);
-			listView1.Columns.Add("VerifyMode", 100, HorizontalAlignment.Left);
-			listView1.Columns.Add("InOut", 60, HorizontalAlignment.Left);
-			listView1.Columns.Add("DateTime", 140, HorizontalAlignment.Left);
-			listView1.Columns.Add("IP", 130, HorizontalAlignment.Left);
-			listView1.Columns.Add("Port", 60, HorizontalAlignment.Left);
-			listView1.Columns.Add("DevID", 60, HorizontalAlignment.Left);
-			listView1.Columns.Add("SerialNo", 60, HorizontalAlignment.Left);
+			userDataListView.Columns.Add(" ", 40, HorizontalAlignment.Left);          //一步添加
+			userDataListView.Columns.Add("EnrollNo", 100, HorizontalAlignment.Left);
+			userDataListView.Columns.Add("VerifyMode", 100, HorizontalAlignment.Left);
+			userDataListView.Columns.Add("InOut", 60, HorizontalAlignment.Left);
+			userDataListView.Columns.Add("DateTime", 140, HorizontalAlignment.Left);
+			userDataListView.Columns.Add("IP", 130, HorizontalAlignment.Left);
+			userDataListView.Columns.Add("Port", 60, HorizontalAlignment.Left);
+			userDataListView.Columns.Add("DevID", 60, HorizontalAlignment.Left);
+			userDataListView.Columns.Add("SerialNo", 60, HorizontalAlignment.Left);
 		}
 
 		private void AdjustSomeControls()
@@ -146,7 +145,7 @@ namespace testkit
 		{
 
 			nIndex = 0;
-			listView1.Items.Clear();
+			userDataListView.Items.Clear();
 		}
 		#endregion
 		#region AX
@@ -174,7 +173,7 @@ namespace testkit
 			}
 
 			//数据更新，UI暂时挂起，直到EndUpdate绘制控件，可以有效避免闪烁并大大提高加载速度
-			listView1.BeginUpdate();
+			userDataListView.BeginUpdate();
 
 			//this.listView1.Focus();
 			ListViewItem lvi = new ListViewItem();
@@ -243,13 +242,13 @@ namespace testkit
 			str = Convert.ToString(e.anSN);
 			lvi.SubItems.Add(str);
 
-			listView1.Items.Add(lvi);
+			userDataListView.Items.Add(lvi);
 			//this.listView1.Items.(5, str);
 
-			listView1.Update();
+			userDataListView.Update();
 
-			listView1.EnsureVisible(nIndex);
-			listView1.EndUpdate();  //结束数据处理，UI界面一次性绘制。
+			userDataListView.EnsureVisible(nIndex);
+			userDataListView.EndUpdate();  //结束数据处理，UI界面一次性绘制。
 
 			int nResult = 1;
 
@@ -259,7 +258,7 @@ namespace testkit
 			if (nIndex > 1000)
 			{
 				nIndex = 0;
-				listView1.Items.Clear();
+				userDataListView.Items.Clear();
 			}
 
 		}
@@ -269,6 +268,7 @@ namespace testkit
 
 		public string FormStringlong(int nVerify, long nEnrollNum) =>
 			nEnrollNum == 0 ? actions[nVerify % 8] : nVerify.ToString();
-		#endregion
-	}
+        #endregion
+
+    }
 }
