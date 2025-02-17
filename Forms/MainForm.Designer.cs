@@ -124,9 +124,11 @@ namespace testkit
             // camPictureBox
             // 
             this.camPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.camPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.camPictureBox.Location = new System.Drawing.Point(0, 0);
             this.camPictureBox.Name = "camPictureBox";
-            this.camPictureBox.Size = new System.Drawing.Size(224, 224);
+            this.camPictureBox.Size = new System.Drawing.Size(320, 256);
+            this.camPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.camPictureBox.TabIndex = 8;
             this.camPictureBox.TabStop = false;
             // 
@@ -163,6 +165,7 @@ namespace testkit
             this.Controls.Add(this.userDataListView);
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.camPictureBox)).EndInit();

@@ -270,5 +270,9 @@ namespace testkit
 			nEnrollNum == 0 ? actions[nVerify % 8] : nVerify.ToString();
         #endregion
 
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+			Environment.Exit(0);
+        }
     }
 }
