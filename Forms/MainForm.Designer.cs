@@ -43,8 +43,11 @@ namespace testkit
             this.camBox = new System.Windows.Forms.ComboBox();
             this.webCamTextLabel = new System.Windows.Forms.Label();
             this.saveCamBut = new System.Windows.Forms.Button();
+            this.takenPhotoPictureBox = new System.Windows.Forms.PictureBox();
+            this.takePhotoBut = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.camPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.takenPhotoPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // userDataListView
@@ -52,7 +55,7 @@ namespace testkit
             this.userDataListView.HideSelection = false;
             this.userDataListView.Location = new System.Drawing.Point(0, 512);
             this.userDataListView.Name = "userDataListView";
-            this.userDataListView.Size = new System.Drawing.Size(768, 160);
+            this.userDataListView.Size = new System.Drawing.Size(768, 192);
             this.userDataListView.TabIndex = 0;
             this.userDataListView.UseCompatibleStateImageBehavior = false;
             this.userDataListView.View = System.Windows.Forms.View.Details;
@@ -126,7 +129,7 @@ namespace testkit
             // 
             this.camPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.camPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.camPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.camPictureBox.Location = new System.Drawing.Point(32, 64);
             this.camPictureBox.Name = "camPictureBox";
             this.camPictureBox.Size = new System.Drawing.Size(320, 256);
             this.camPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -156,20 +159,47 @@ namespace testkit
             // 
             // saveCamBut
             // 
+            this.saveCamBut.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.saveCamBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.saveCamBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.saveCamBut.Location = new System.Drawing.Point(800, 576);
+            this.saveCamBut.Location = new System.Drawing.Point(480, 352);
             this.saveCamBut.Name = "saveCamBut";
             this.saveCamBut.Size = new System.Drawing.Size(192, 64);
             this.saveCamBut.TabIndex = 11;
             this.saveCamBut.Text = "Сохранить изображение";
-            this.saveCamBut.UseVisualStyleBackColor = true;
+            this.saveCamBut.UseVisualStyleBackColor = false;
             this.saveCamBut.Click += new System.EventHandler(this.saveCamBut_Click);
+            // 
+            // takenPhotoPictureBox
+            // 
+            this.takenPhotoPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.takenPhotoPictureBox.Location = new System.Drawing.Point(416, 64);
+            this.takenPhotoPictureBox.Name = "takenPhotoPictureBox";
+            this.takenPhotoPictureBox.Size = new System.Drawing.Size(320, 256);
+            this.takenPhotoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.takenPhotoPictureBox.TabIndex = 12;
+            this.takenPhotoPictureBox.TabStop = false;
+            // 
+            // takePhotoBut
+            // 
+            this.takePhotoBut.BackColor = System.Drawing.Color.SpringGreen;
+            this.takePhotoBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.takePhotoBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.takePhotoBut.Location = new System.Drawing.Point(96, 352);
+            this.takePhotoBut.Name = "takePhotoBut";
+            this.takePhotoBut.Size = new System.Drawing.Size(192, 64);
+            this.takePhotoBut.TabIndex = 13;
+            this.takePhotoBut.Text = "Сделать фото";
+            this.takePhotoBut.UseVisualStyleBackColor = false;
+            this.takePhotoBut.Click += new System.EventHandler(this.takePhotoBut_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1324, 707);
+            this.Controls.Add(this.takePhotoBut);
+            this.Controls.Add(this.takenPhotoPictureBox);
             this.Controls.Add(this.saveCamBut);
             this.Controls.Add(this.webCamTextLabel);
             this.Controls.Add(this.camBox);
@@ -182,6 +212,7 @@ namespace testkit
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.camPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.takenPhotoPictureBox)).EndInit();
             this.ResumeLayout(false);
 
 		}
@@ -200,6 +231,8 @@ namespace testkit
         private System.Windows.Forms.ComboBox camBox;
         private System.Windows.Forms.Label webCamTextLabel;
         private System.Windows.Forms.Button saveCamBut;
+        private System.Windows.Forms.PictureBox takenPhotoPictureBox;
+        private System.Windows.Forms.Button takePhotoBut;
     }
 }
 

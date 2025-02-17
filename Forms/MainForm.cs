@@ -70,13 +70,21 @@ namespace testkit
 			camPictureBox.Image = (Bitmap)e.Frame.Clone();
 		}
 
+        private void takePhotoBut_Click(object sender, EventArgs e)
+        {
+            if (camPictureBox.Image == null)
+                return;
+
+			takenPhotoPictureBox.Image = (Bitmap)camPictureBox.Image.Clone();
+        }
+
         private void saveCamBut_Click(object sender, EventArgs e)
         {
-			if (camPictureBox.Image == null)
+			if (takenPhotoPictureBox.Image == null)
 				return;
 
-			string imageName = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString() + ".png";
-			camPictureBox.Image.Save(imageName);
+			string imageName = $"img_{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}.png";
+            takenPhotoPictureBox.Image.Save(imageName, System.Drawing.Imaging.ImageFormat.Png);
         }
 
         #endregion WEB_CAM
@@ -281,6 +289,7 @@ namespace testkit
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+			videoCaptureDevice?.Stop();
 			Environment.Exit(0);
         }
     }
