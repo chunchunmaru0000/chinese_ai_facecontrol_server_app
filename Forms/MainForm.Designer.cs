@@ -36,7 +36,6 @@ namespace testkit
             this.disconnectBut = new System.Windows.Forms.Button();
             this.clearList = new System.Windows.Forms.Button();
             this.textPort = new System.Windows.Forms.TextBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panel1 = new System.Windows.Forms.Panel();
             this.portLabel = new System.Windows.Forms.Label();
             this.camPictureBox = new System.Windows.Forms.PictureBox();
@@ -47,6 +46,11 @@ namespace testkit
             this.takePhotoBut = new System.Windows.Forms.Button();
             this.aiPictureBox = new System.Windows.Forms.PictureBox();
             this.idLabel = new System.Windows.Forms.Label();
+            this.ipAdressBox = new System.Windows.Forms.TextBox();
+            this.ipAddressTextLabel = new System.Windows.Forms.Label();
+            this.passwordBox = new System.Windows.Forms.TextBox();
+            this.passwordTextLabel = new System.Windows.Forms.Label();
+            this.ipPortBox = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.camPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.takenPhotoPictureBox)).BeginInit();
@@ -66,7 +70,7 @@ namespace testkit
             // connectBut
             // 
             this.connectBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.connectBut.Location = new System.Drawing.Point(0, 32);
+            this.connectBut.Location = new System.Drawing.Point(0, 96);
             this.connectBut.Name = "connectBut";
             this.connectBut.Size = new System.Drawing.Size(192, 32);
             this.connectBut.TabIndex = 1;
@@ -76,8 +80,9 @@ namespace testkit
             // 
             // disconnectBut
             // 
+            this.disconnectBut.Enabled = false;
             this.disconnectBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.disconnectBut.Location = new System.Drawing.Point(0, 64);
+            this.disconnectBut.Location = new System.Drawing.Point(0, 128);
             this.disconnectBut.Name = "disconnectBut";
             this.disconnectBut.Size = new System.Drawing.Size(192, 32);
             this.disconnectBut.TabIndex = 2;
@@ -88,7 +93,7 @@ namespace testkit
             // clearList
             // 
             this.clearList.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.clearList.Location = new System.Drawing.Point(0, 96);
+            this.clearList.Location = new System.Drawing.Point(0, 160);
             this.clearList.Name = "clearList";
             this.clearList.Size = new System.Drawing.Size(192, 32);
             this.clearList.TabIndex = 3;
@@ -99,22 +104,28 @@ namespace testkit
             // textPort
             // 
             this.textPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textPort.Location = new System.Drawing.Point(96, 0);
+            this.textPort.Location = new System.Drawing.Point(128, 0);
             this.textPort.Name = "textPort";
-            this.textPort.Size = new System.Drawing.Size(95, 31);
+            this.textPort.Size = new System.Drawing.Size(160, 31);
             this.textPort.TabIndex = 4;
+            this.textPort.Text = "7005";
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.ipPortBox);
+            this.panel1.Controls.Add(this.passwordTextLabel);
+            this.panel1.Controls.Add(this.passwordBox);
+            this.panel1.Controls.Add(this.ipAddressTextLabel);
+            this.panel1.Controls.Add(this.ipAdressBox);
             this.panel1.Controls.Add(this.portLabel);
             this.panel1.Controls.Add(this.disconnectBut);
             this.panel1.Controls.Add(this.connectBut);
             this.panel1.Controls.Add(this.clearList);
             this.panel1.Controls.Add(this.textPort);
-            this.panel1.Location = new System.Drawing.Point(1120, 608);
+            this.panel1.Location = new System.Drawing.Point(800, 544);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(192, 128);
+            this.panel1.Size = new System.Drawing.Size(352, 192);
             this.panel1.TabIndex = 6;
             // 
             // portLabel
@@ -143,7 +154,7 @@ namespace testkit
             // 
             this.camBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.camBox.FormattingEnabled = true;
-            this.camBox.Location = new System.Drawing.Point(1120, 576);
+            this.camBox.Location = new System.Drawing.Point(1184, 576);
             this.camBox.Name = "camBox";
             this.camBox.Size = new System.Drawing.Size(192, 33);
             this.camBox.TabIndex = 9;
@@ -153,7 +164,7 @@ namespace testkit
             // webCamTextLabel
             // 
             this.webCamTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.webCamTextLabel.Location = new System.Drawing.Point(1120, 544);
+            this.webCamTextLabel.Location = new System.Drawing.Point(1184, 544);
             this.webCamTextLabel.Name = "webCamTextLabel";
             this.webCamTextLabel.Size = new System.Drawing.Size(192, 32);
             this.webCamTextLabel.TabIndex = 10;
@@ -202,6 +213,7 @@ namespace testkit
             this.aiPictureBox.Location = new System.Drawing.Point(800, 64);
             this.aiPictureBox.Name = "aiPictureBox";
             this.aiPictureBox.Size = new System.Drawing.Size(320, 256);
+            this.aiPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.aiPictureBox.TabIndex = 14;
             this.aiPictureBox.TabStop = false;
             // 
@@ -215,11 +227,58 @@ namespace testkit
             this.idLabel.TabIndex = 15;
             this.idLabel.Text = "ПОСЛЕДНИЙ ID:  ";
             // 
+            // ipAdressBox
+            // 
+            this.ipAdressBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ipAdressBox.Location = new System.Drawing.Point(128, 32);
+            this.ipAdressBox.Name = "ipAdressBox";
+            this.ipAdressBox.Size = new System.Drawing.Size(160, 31);
+            this.ipAdressBox.TabIndex = 16;
+            this.ipAdressBox.Text = "192.168.1.224";
+            // 
+            // ipAddressTextLabel
+            // 
+            this.ipAddressTextLabel.AutoSize = true;
+            this.ipAddressTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ipAddressTextLabel.Location = new System.Drawing.Point(0, 32);
+            this.ipAddressTextLabel.Name = "ipAddressTextLabel";
+            this.ipAddressTextLabel.Size = new System.Drawing.Size(40, 31);
+            this.ipAddressTextLabel.TabIndex = 17;
+            this.ipAddressTextLabel.Text = "IP";
+            // 
+            // passwordBox
+            // 
+            this.passwordBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.passwordBox.Location = new System.Drawing.Point(128, 64);
+            this.passwordBox.Name = "passwordBox";
+            this.passwordBox.Size = new System.Drawing.Size(160, 31);
+            this.passwordBox.TabIndex = 18;
+            this.passwordBox.Text = "0";
+            // 
+            // passwordTextLabel
+            // 
+            this.passwordTextLabel.AutoSize = true;
+            this.passwordTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.passwordTextLabel.Location = new System.Drawing.Point(0, 64);
+            this.passwordTextLabel.Name = "passwordTextLabel";
+            this.passwordTextLabel.Size = new System.Drawing.Size(108, 31);
+            this.passwordTextLabel.TabIndex = 19;
+            this.passwordTextLabel.Text = "Пароль";
+            // 
+            // ipPortBox
+            // 
+            this.ipPortBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ipPortBox.Location = new System.Drawing.Point(288, 32);
+            this.ipPortBox.Name = "ipPortBox";
+            this.ipPortBox.Size = new System.Drawing.Size(64, 31);
+            this.ipPortBox.TabIndex = 20;
+            this.ipPortBox.Text = "5005";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1314, 738);
+            this.ClientSize = new System.Drawing.Size(1382, 738);
             this.Controls.Add(this.idLabel);
             this.Controls.Add(this.aiPictureBox);
             this.Controls.Add(this.takePhotoBut);
@@ -250,7 +309,6 @@ namespace testkit
 		private System.Windows.Forms.Button disconnectBut;
 		private System.Windows.Forms.Button clearList;
 		private System.Windows.Forms.TextBox textPort;
-		private System.ComponentModel.BackgroundWorker backgroundWorker1;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.PictureBox camPictureBox;
@@ -261,6 +319,11 @@ namespace testkit
         private System.Windows.Forms.Button takePhotoBut;
         private System.Windows.Forms.PictureBox aiPictureBox;
         private System.Windows.Forms.Label idLabel;
+        private System.Windows.Forms.TextBox ipAdressBox;
+        private System.Windows.Forms.Label ipAddressTextLabel;
+        private System.Windows.Forms.Label passwordTextLabel;
+        private System.Windows.Forms.TextBox passwordBox;
+        private System.Windows.Forms.TextBox ipPortBox;
     }
 }
 

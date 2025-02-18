@@ -134,10 +134,12 @@
   <ItemGroup>
     <Content Include="Related\AxInterop.FPCLOCK_SVRLib.dll" />
     <Content Include="Related\AxInterop.FP_CLOCKLib.dll" />
+    <Content Include="Related\CH375DLL.DLL" />
     <Content Include="Related\dlls setup.txt" />
     <Content Include="Related\FPCLOCK_Svr.ocx" />
     <Content Include="Related\Interop.FPCLOCK_SVRLib.dll" />
     <Content Include="Related\Interop.FP_CLOCKLib.dll" />
+    <Content Include="Related\TMPCCOMM.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

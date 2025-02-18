@@ -4,19 +4,22 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
 using AxFPCLOCK_SVRLib;
+using AxFP_CLOCKLib;
 using AForge;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace testkit
 {
 	public partial class MainForm : Form
 	{
-		private AxFPCLOCK_Svr axFPCLOCK_Svr;
-		private int nIndex = 0;
+		private AxFPCLOCK_Svr axFPCLOCK_Svr { get; set; }
+        private AxFP_CLOCK axFP_CLOCK { get; set; }
 
+		private int nIndex { get; set; } = 0;
 		private readonly Dictionary<int, string> actions = new Dictionary<int, string>() 
 		{
 			{ 0, "Closed" },   { 1, "Opened" },
@@ -30,7 +33,6 @@ namespace testkit
 		{
 			InitializeComponent();
 			InitaxFPCLOCK_Svr();
-			AdjustSomeControls();
 			InitListView();
         }
 
@@ -98,18 +100,30 @@ namespace testkit
         ZW0uV2luZG93cy5Gb3Jtcy5BeEhvc3QrU3RhdGUBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAJQAAAAIB
         AAAAAQAAAAAAAAAAAAAAABAAAAAAAAEAVgoAADgEAAAAAAAACw==
 ";
-
             byte[] serializedData = Convert.FromBase64String(stateStr);
 
-			axFPCLOCK_Svr = new AxFPCLOCK_Svr() { Name = "axFPCLOCK_Svr1" };
+
 			using (MemoryStream ms = new MemoryStream(serializedData))
-				axFPCLOCK_Svr.OcxState = new AxHost.State(ms, 1, false, null);
+			axFPCLOCK_Svr = new AxFPCLOCK_Svr() 
+			{
+				Name = "axFPCLOCK_Svr", 
+                OcxState = new AxHost.State(ms, 1, false, null),
+				Location = new System.Drawing.Point(0, -100)
+            };
+			axFPCLOCK_Svr.OnReceiveGLogData += axFPCLOCK_Svr1_OnReceiveGLogData;
 
-			axFPCLOCK_Svr.OnReceiveGLogData +=
-				new AxFPCLOCK_SVRLib._DFPCLOCK_SvrEvents_OnReceiveGLogDataEventHandler(
-					axFPCLOCK_Svr1_OnReceiveGLogData);
 
-			Controls.Add(axFPCLOCK_Svr);
+            using (MemoryStream ms = new MemoryStream(serializedData))
+			axFP_CLOCK = new AxFP_CLOCK() 
+			{ 
+				Name = "axFP_CLOCK",
+				OcxState = new AxHost.State(ms, 1, false, null),
+                Location = new System.Drawing.Point(0, -100)
+            };
+
+
+            Controls.Add(axFPCLOCK_Svr);
+			Controls.Add(axFP_CLOCK);
 		}
 
 		private void InitListView()
@@ -124,34 +138,69 @@ namespace testkit
 			userDataListView.Columns.Add("DevID", 60, HorizontalAlignment.Left);
 			userDataListView.Columns.Add("SerialNo", 60, HorizontalAlignment.Left);
 		}
-
-		private void AdjustSomeControls()
-		{
-			connectBut.Enabled = true;
-			disconnectBut.Enabled = false;
-
-			textPort.Text = "7005";
-		}
 		#endregion
+
 		#region BUTS
 		private void button1_Click(object sender, EventArgs e)
 		{
 			if (int.TryParse(textPort.Text, out int port))
 			{
-				axFPCLOCK_Svr.OpenNetwork(port);
-				connectBut.Enabled = false;
-				disconnectBut.Enabled = true;
-			}
+				if (OpenAxFP_CLOCK())
+				{
+					connectBut.Enabled = false;
+					disconnectBut.Enabled = true;
+					axFPCLOCK_Svr.OpenNetwork(port);
+				}
+				else
+                    MessageBox.Show("НЕ ПОДКЛЮЧИЛОСЬ");
+            }
 			else
 				MessageBox.Show("НЕВРНОЕ ЧИСЛО ДЛЯ ОТКРЫВАЕМОГО ПОРТА");
 		}
 
-		private void Disconnect_Click(object sender, EventArgs e)
+        private bool OpenAxFP_CLOCK()
+        {
+			const int m_nCurSelID = 1;
+
+            int nPort = Convert.ToInt32(ipPortBox.Text);
+            int nPassword = Convert.ToInt32(passwordBox.Text);
+            string strIP = ipAdressBox.Text;
+
+            axFP_CLOCK.OpenCommPort(m_nCurSelID);
+            if (!axFP_CLOCK.SetIPAddress(ref strIP, nPort, nPassword))
+                return false;
+			return axFP_CLOCK.OpenCommPort(m_nCurSelID);
+            /*
+			switch (nConnecttype)
+			{
+				case (int)CURDEVICETYPE.DEVICE_NET:
+					#################################
+							currently used
+					#################################
+					break;
+				case (int)CURDEVICETYPE.DEVICE_COM:
+					axFP_CLOCK.CommPort = cmbComPort.SelectedIndex + 1;
+					axFP_CLOCK.Baudrate = 38400;
+					break;
+				case (int)CURDEVICETYPE.DEVICE_USB:
+					axFP_CLOCK.IsUSB = true;
+					break;
+				case (int)CURDEVICETYPE.DEVICE_P2S:
+					int nPort = Convert.ToInt32(P2SPort.Text);
+					int nTimeOut = Convert.ToInt32(P2STimeOut.Text);
+					axFP_CLOCK.SetServerPortandtick(nPort, nTimeOut);
+					break;
+			}
+             */
+        }
+
+        private void Disconnect_Click(object sender, EventArgs e)
 		{
 			if (int.TryParse(textPort.Text, out int port))
 			{
 				axFPCLOCK_Svr.CloseNetwork(port);
-				connectBut.Enabled = true;
+                axFP_CLOCK.CloseCommPort();
+                connectBut.Enabled = true;
 				disconnectBut.Enabled = false;
 			}
 			else
@@ -199,7 +248,8 @@ namespace testkit
 						mbytCurEnrollData.CopyTo(imageBytes, 0);
 
 						aiPictureBox.Image = new Bitmap(new MemoryStream(imageBytes)).Clone() as Bitmap;
-					} catch { }
+					} 
+					catch { }
 
 					File.WriteAllBytes(imageName, mbytCurEnrollData);
 				}
